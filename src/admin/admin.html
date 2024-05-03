@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.tiny.cloud/1/7jfscj7dqiln2vqvci5w5zdq2anh4glskxu6kdoczg2vkskw/tinymce/7/tinymce.min.js"
+      referrerpolicy="origin"
+    ></script>
+    <script type="module" src="../js/admin.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Admin Page</title>
+  </head>
+  <body>
+    <nav class="navbar bg-body-tertiary container-fluid px-5">
+      <div class="container-fluid col">
+        <span class="navbar-brand mb-0 h1">Página Admin</span>
+
+        <div class="d-flex row gap-2 container justify-content-end">
+          <div class="dropdown col-2">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Ações
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="./list.html"
+                  > <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                  </svg> Listagem de notícias</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="../index.html"
+                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z" />
+                  </svg>
+                  Voltar página inicial</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container-fluid mt-5">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb"></ol>
+      </nav>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title text-center">Criar notícia</h5>
+              <form id="newsForm"  novalidate>
+                <div class="mb-3">
+                    <label for="newsTittle" class="form-label">Título</label>
+                    <input name="newsTittle" type="text" class="form-control" placeholder="Digite o título da notícia" id="newsTitle" required aria-describedby="newsTittle">
+                    <div id="newsTittleFeedback" class="invalid-feedback">Por favor, insira um título para a notícia.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="imageURL" class="form-label">Imagem da capa</label>
+                    <input type="url" required class="form-control"  name="imageURL" id="imageURL" aria-describedby="imageURL" placeholder="Insira o URL da imagem">
+                    <div id="imageURLFeedback" class="invalid-feedback">Por favor, insira um URL de imagem válido.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="newsAuthor" class="form-label">Autor</label>
+                    <input type="text" class="form-control" id="newsAuthor" name="newsAuthor" aria-describedby="newsAuthor" placeholder="Digite o nome do autor da noíticia" required>
+                    <div id="newsAuthorFeedback" class="invalid-feedback">Por favor, insira o nome do autor da notícia.</div>
+                </div>                            
+                <div class="mb-3">
+                    <label for="newsContent" class="form-label">Conteúdo</label>
+                    <textarea class="form-control" id="newsContent" name="newsContent" required></textarea>
+                    <div id="newsContentFeedback" class="invalid-feedback">O conteúdo da notícia não pode ser vazio.</div>
+                </div>
+                <button id="send-form" type="submit" class="btn btn-dark d-block"></button>
+            </form>                  
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
