@@ -1,5 +1,5 @@
 import { elements } from "./elements.js";
-import { apiUrl } from "./utils.js";
+import { apiUrl, removeLoading, renderLoading } from "./utils.js";
 
 
 tinymce.init({
@@ -14,9 +14,7 @@ function validateForm() {
   const textarea = document.querySelector("textarea");
   const form = document.getElementById("newsForm");
 
-  textarea.classList.toggle("is-invalid", content === "");
-
-  if (content === "") return false;
+  
 
   if (!form.checkValidity()) {
     event.preventDefault();
@@ -41,8 +39,18 @@ function handleFormSubmission(callback) {
   };
 }
 
+function collectFormData() {
+  const titulo = document.getElementById("newsTitle").value;
+  const imagem = document.getElementById("imageURL").value;
+  const autor = document.getElementById("newsAuthor").value;
+  const conteudo =  tinymce.activeEditor.getContent();
+
+  console.log('conteudo', conteudo)
+  return { titulo, conteudo, imagem, autor};
+}
+
 async function createNews() {
-  const data = collectFormData();
+  const data =  collectFormData();
  try {
     const response = await fetch(`${apiUrl}/index.php?action=add`, {
       method: "POST",
@@ -63,33 +71,31 @@ async function createNews() {
 
 async function updateNews() {
   const data = collectFormData();
-   const newsId = getUrlParameter("newsId");
+  const newsId = getUrlParameter("newsId");
 
-   try{
-     const response = await fetch(`${apiUrl}/index.php?action=update&id=${newsId}`, {
-       method: "PUT",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify(data),
-     });
+  try {
+    const response = await fetch(`${apiUrl}/index.php?action=update&id=${newsId}`, {
+      method: "PUT", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-     const news = await response.json();
-     handleAlert("Notícia atualizada com sucesso", "success");
-   } catch (error) {
-     handleAlert("Erro ao atualizar notícia", "danger");
-   }
+    const result = await response.json(); 
 
-
+    if (response.ok) {
+      handleAlert(result.message, "success");
+    } else {
+      handleAlert(result.message, "danger");
+    }
+  } catch (error) {
+    handleAlert("Erro ao atualizar notícia", "danger"); 
+  }
 }
 
-function collectFormData() {
-  const titulo = document.getElementById("newsTitle").value;
-  const conteudo = tinymce.activeEditor.getContent();
-  const imagem = document.getElementById("imageURL").value;
-  const autor = document.getElementById("newsAuthor").value;
-  return { titulo, conteudo, imagem, autor};
-}
+
+
 
 function setFormData(news) {
   document.getElementById("newsTitle").value = news.titulo;
@@ -106,9 +112,11 @@ async function initAdminPage() {
   handleButton(isEditing);
 
   if (isEditing) {
+    renderLoading();
     const news = await getOneData(newsId);
     setFormData(news);
-  }
+  }  removeLoading();
+
 }
 
 async function getOneData(id) {
@@ -165,28 +173,8 @@ function getUrlParameter(name) {
 }
 
 
-function clearParamsUrl() {
-  const url = new URL(window.location.href);
-  url.searchParams.delete("newsId");
-  window.history.replaceState({}, document.title, url.pathname);
-}
 
-function renderLoading() {
-  const body = document.querySelector("body");
-  const loadingElement = document.createElement("div");
-  loadingElement.classList.add("loading");
-  loadingElement.innerHTML = `<div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>`;
-  body.appendChild(loadingElement);
-}
 
-function removeLoading() {
-  const loadingElement = document.querySelector(".loading");
-  if (loadingElement) {
-    loadingElement.remove();
-  }
-}
 
 
 window.addEventListener("load", initAdminPage);

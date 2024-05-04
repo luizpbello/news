@@ -13,12 +13,12 @@ header("Access-Control-Allow-Methods: HEAD, GET, POST, PUT, PATCH, DELETE, OPTIO
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
 header('Content-Type: application/json');
 $method = $_SERVER['REQUEST_METHOD'];
-if ($method == "OPTIONS") {
-header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
-header("HTTP/1.1 200 OK");
-die();
-}
+// if ($method == "OPTIONS") {
+// header('Access-Control-Allow-Origin: *');
+// header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
+// header("HTTP/1.1 200 OK");
+// die();
+// }
 
 
 try {
@@ -70,11 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     }
 }
 
-// Rota para adicionar uma nova notícia (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'add') {
     $data = json_decode(file_get_contents('php://input'), true);
     
-    // Verificar se todos os campos necessários foram fornecidos
 
     $titulo = $data['titulo'];
     $autor = $data['autor'];
@@ -84,60 +82,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
     // Inserir a notícia no banco de dados
     $sql = "INSERT INTO noticia (titulo, autor, conteudo, imagem) VALUES ('$titulo', '$autor', '$conteudo', '$imagem')";
     if ($conn->query($sql) === TRUE) {
-        echo "Notícia adicionada com sucesso.";
+        echo json_encode(array("message" => "Notícia adicionada com sucesso."));
     } else {
-        echo "Erro ao adicionar notícia: " . $conn->error;
+        echo json_encode(array("message" => "Erro ao adicionar notícia: " . $conn->error));
     }
     exit();
 }
+
 
 // Rota para atualizar uma notícia (PUT)
 if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_GET['action']) && $_GET['action'] === 'update') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    
-    // Verificar se todos os campos necessários foram fornecidos
-    if(isset($data['id'])) {
-        $id = $data['id'];
-        $titulo = $data['titulo'];
-        $autor = $data['autor'];
-        $conteudo = $data['conteudo'];
-        $imagem = $data['imagem'];
+    // Pega o ID diretamente de $_GET
+    if(isset($_GET['id'])) {
+        $id = $_GET['id'];
+
+        // Lê o conteúdo do corpo da solicitação e decodifica o JSON
+        $data = json_decode(file_get_contents('php://input'), true);
         
-        // Atualizar a notícia no banco de dados
-        $sql = "UPDATE noticia SET titulo='$titulo', autor='$autor', conteudo='$conteudo', imagem='$imagem' WHERE id=$id";
-        if ($conn->query($sql) === TRUE) {
-            echo "Notícia atualizada com sucesso.";
+        // Verifica se todos os campos necessários foram fornecidos
+        if(isset($data['titulo'], $data['autor'], $data['conteudo'], $data['imagem'])) {
+            $titulo = $data['titulo'];
+            $autor = $data['autor'];
+            $conteudo = $data['conteudo'];
+            $imagem = $data['imagem'];
+
+            // Atualizar a notícia no banco de dados
+            $sql = "UPDATE noticia SET titulo='$titulo', autor='$autor', conteudo='$conteudo', imagem='$imagem' WHERE id=$id";
+            if ($conn->query($sql) === TRUE) {
+               echo json_encode(array("message" => "Notícia atualizada com sucesso."));
+            } else {
+                echo json_encode(array("message" => "Erro ao atualizar notícia: " . $conn->error));
+            }
         } else {
-            echo "Erro ao atualizar notícia: " . $conn->error;
+            echo json_encode(array("message" => "Todos os campos são necessários."));
         }
     } else {
-        echo "O parâmetro 'id' não foi fornecido.";
+        echo json_encode(array("message" => "O parâmetro 'id' não foi fornecido."));
     }
     exit();
 }
+
+
 
 
 // Rota para deletar uma notícia (DELETE)
-
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['action']) && $_GET['action'] === 'delete') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    
-    // Verificar se todos os campos necessários foram fornecidos
-    if(isset($data['id'])) {
-        $id = $data['id'];
-        
+    // Pega o ID diretamente de $_GET
+    if(isset($_GET['id'])) {
+        $id = $_GET['id'];
+
         // Deletar a notícia no banco de dados
         $sql = "DELETE FROM noticia WHERE id=$id";
         if ($conn->query($sql) === TRUE) {
-            echo "Notícia deletada com sucesso.";
+            echo json_encode(array("message" => "Notícia deletada com sucesso."));
         } else {
-            echo "Erro ao deletar notícia: " . $conn->error;
+            echo json_encode(array("message" => "Erro ao deletar notícia: " . $conn->error));
         }
     } else {
-        echo "O parâmetro 'id' não foi fornecido.";
+        echo json_encode(array("message" => "O parâmetro 'id' não foi fornecido."));
     }
     exit();
 }
+
 
 // Rota para pegar uma notícia por ID (GET)
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getOne') {

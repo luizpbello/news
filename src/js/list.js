@@ -1,5 +1,5 @@
 import { elements } from "./elements.js";
-import { apiUrl } from "./utils.js";
+import { apiUrl, removeLoading, renderLoading } from "./utils.js";
 
 
 
@@ -14,9 +14,11 @@ elements.redirec_home.addEventListener("click", () => {
 
 
 async function listNews() {
+  renderLoading();
   const response = await fetch(`${apiUrl}/index.php?action=list`);
   const data = await response.json();
   buildTableBody(data);
+  removeLoading();
 }
 
 function buildTableBody(news) {
@@ -56,8 +58,25 @@ function redirectWithIdParam(id) {
 }
 
 window.deleteNews = function (id) {
-  console.log(`Para deletar a notícia com id ${id}`);
+  deleteNewsById(id);
 };
+
+async function deleteNewsById(id) {    
+    renderLoading(); 
+  
+  try {
+    const response = await fetch(`${apiUrl}/index.php?action=delete&id=${id}`, {
+      method: "DELETE",
+    });
+    const data = await response.json();
+    listNews();
+  } catch (error) {
+    console.error("Erro ao excluir notícia:", error);
+  } finally {
+    removeLoading(); 
+  }
+}
+
 
 window.onload = function () {
   listNews();
