@@ -1,5 +1,5 @@
 import { elements } from "./elements.js";
-import { apiUrl, renderLoading, removeLoading } from "./utils.js";
+import { apiUrl, renderLoading, removeLoading, formatDate } from "./utils.js";
 
 function redirectToAdmin() {
   window.location.href = "./admin/list.html";
@@ -31,9 +31,7 @@ async function listNews() {
   removeLoading();
 }
 
-function formatDate(date) {
-  return new Date(date).toLocaleDateString("pt-BR");
-}
+
 
 function renderNews(news) {
   const newsContainer = elements.news_container;

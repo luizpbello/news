@@ -8,7 +8,9 @@ https://uniasselvinews.000webhostapp.com/index.php?action=search&titulo={titulo}
 import {formElements} from "./elements.js";
 export const apiUrl = "https://uniasselvinews.000webhostapp.com";
 
-
+export function formatDate(date) {
+  return new Date(date).toLocaleDateString("pt-BR");
+}
 
 export function renderLoading() {
     const body = document.querySelector("body");

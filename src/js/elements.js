@@ -9,6 +9,7 @@ export const elements = {
   search: document.getElementById("search-input"),
   redirect_home: document.getElementById("redirect-home"),
   news_container: document.getElementById("news-container"),
+  view_container: document.getElementById("view-container"),
 };
 
 export const formElements = {
