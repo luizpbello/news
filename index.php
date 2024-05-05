@@ -1,9 +1,16 @@
+
+
+//define("DB_HOST", "localhost");
+//define("DB_USERNAME", "id22107572_uninews");
+//define("DB_PASSWORD", "h@j5~5xT7WN?");
+//define("DB_DATABASE_NAME", "id22107572_notice");
+
 <?php
 
 // Definindo as credenciais do banco de dados
 define("DB_HOST", "localhost");
-define("DB_USERNAME", "root");
-define("DB_PASSWORD", "");
+define("DB_USERNAME", "id22107572_uninews");
+define("DB_PASSWORD", "h@j5~5xT7WN?");
 define("DB_DATABASE_NAME", "id22107572_notice");
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -13,12 +20,12 @@ header("Access-Control-Allow-Methods: HEAD, GET, POST, PUT, PATCH, DELETE, OPTIO
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
 header('Content-Type: application/json');
 $method = $_SERVER['REQUEST_METHOD'];
-// if ($method == "OPTIONS") {
-// header('Access-Control-Allow-Origin: *');
-// header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
-// header("HTTP/1.1 200 OK");
-// die();
-// }
+if ($method == "OPTIONS") {
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
+header("HTTP/1.1 200 OK");
+die();
+}
 
 
 try {
@@ -28,7 +35,7 @@ try {
         throw new Exception("Erro de conexão: " . $conn->connect_error);
     }
 } catch (Exception $e) {
-    echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+    echo json_encode(array("message" => $e->getMessage()));
     exit();
 }
 

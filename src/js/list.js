@@ -1,5 +1,5 @@
 import { elements } from "./elements.js";
-import { apiUrl, removeLoading, renderLoading } from "./utils.js";
+import { apiUrl, removeLoading, renderLoading, handleAlert } from "./utils.js";
 
 
 
@@ -10,7 +10,6 @@ elements.create_btn.addEventListener("click", () => {
 elements.redirec_home.addEventListener("click", () => {
   window.location.href = "../index.html";
 })
-
 
 
 async function listNews() {
@@ -69,9 +68,10 @@ async function deleteNewsById(id) {
       method: "DELETE",
     });
     const data = await response.json();
+    handleAlert(`Notícia de ID ${id} exlcuida com sucesso`, "success");
     listNews();
   } catch (error) {
-    console.error("Erro ao excluir notícia:", error);
+    handleAlert("Erro ao deletar notícia", "danger");
   } finally {
     removeLoading(); 
   }

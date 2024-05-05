@@ -1,5 +1,5 @@
 import { elements } from "./elements.js";
-import { apiUrl, removeLoading, renderLoading } from "./utils.js";
+import { apiUrl, removeLoading, renderLoading, clearForm, handleAlert } from "./utils.js";
 
 
 tinymce.init({
@@ -45,12 +45,11 @@ function collectFormData() {
   const autor = document.getElementById("newsAuthor").value;
   const conteudo =  tinymce.activeEditor.getContent();
 
-  console.log('conteudo', conteudo)
   return { titulo, conteudo, imagem, autor};
 }
 
 async function createNews() {
-  const data =  collectFormData();
+  const data = collectFormData();
  try {
     const response = await fetch(`${apiUrl}/index.php?action=add`, {
       method: "POST",
@@ -94,9 +93,6 @@ async function updateNews() {
   }
 }
 
-
-
-
 function setFormData(news) {
   document.getElementById("newsTitle").value = news.titulo;
   tinymce.get("newsContent").setContent(news.conteudo);
@@ -133,35 +129,7 @@ function handleButton(isEditing) {
   elements.send_form_btn.addEventListener("click", handleFormSubmission(callback));
 }
 
-function handleAlert(message, type) {
-  const body = document.querySelector("body");
-  body.insertAdjacentHTML(
-    "beforebegin",
-    `<div id="snack" class="alert alert-${type}  d-flex align-items-center" role="alert">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <div class="px-2">
-      ${message}
-      </div>
-     </div>`
-  );
-  setTimeout(() => {
-    const snack = document.getElementById("snack");
-    if (snack) {
-      snack.remove();
-    }
-  }, 3000);
-}
 
-function clearForm() {
-  document.getElementById("newsTitle").value = "";
-  tinymce.activeEditor.setContent("");
-  document.getElementById("imageURL").value = "";
-  document.getElementById("newsAuthor").value = "";
-  const form = document.getElementById("newsForm");
-  form.classList.remove("was-validated");
-}
 
 function getUrlParameter(name) {
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -171,8 +139,6 @@ function getUrlParameter(name) {
     ? ""
     : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
-
-
 
 
 
