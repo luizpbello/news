@@ -18,43 +18,40 @@
     <title>Admin Page</title>
   </head>
   <body>
-    <nav class="navbar bg-body-tertiary container-fluid px-5">
-      <div class="container-fluid col">
+    <nav class="navbar bg-body-tertiar container-fluid px-5">
+      <div class="container-fluid d-flex justify-content-around align-items-center">
         <span class="navbar-brand mb-0 h1">Página Admin</span>
-
-        <div class="d-flex row gap-2 container justify-content-end">
-          <div class="dropdown col-2">
-            <button
-              class="btn btn-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Ações
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="./list.html"
-                  > <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                  </svg> Listagem de notícias</a
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Ações
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="./list.html">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg> Listagem de notícias
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="../index.html"
                 >
-              </li>
-              <li>
-                <a class="dropdown-item" href="../index.html"
-                  >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z" />
-                  </svg>
-                  Voltar página inicial</a
-                >
-              </li>
-            </ul>
-          </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z" />
+                </svg>
+                Voltar página inicial</a
+              >
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
-
+    
     <main class="container-fluid mt-5">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb"></ol>
