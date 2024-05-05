@@ -1,6 +1,11 @@
-import { elements } from "./elements.js";
-import { apiUrl, removeLoading, renderLoading, clearForm, handleAlert } from "./utils.js";
-
+import { elements, formElements } from "./elements.js";
+import {
+  apiUrl,
+  removeLoading,
+  renderLoading,
+  clearForm,
+  handleAlert,
+} from "./utils.js";
 
 tinymce.init({
   selector: "textarea",
@@ -10,47 +15,59 @@ tinymce.init({
 });
 
 function validateForm() {
+  let isValid = true;
+
   const content = tinymce.activeEditor.getContent();
-  const textarea = document.querySelector("textarea");
-  const form = document.getElementById("newsForm");
+  const editor = document.querySelector("textarea");
 
-  
-
-  if (!form.checkValidity()) {
-    event.preventDefault();
-    event.stopPropagation();
+  for (const htmlElement in formElements) {
+    const element = formElements[htmlElement];
+    if (!element.checkValidity() || content === "") {
+      isValid = false;
+      element.classList.add("is-invalid");
+      element.classList.remove("is-valid");
+      editor.classList.add("is-invalid");
+      editor.classList.remove("is-valid");
+    } else {
+      element.classList.remove("is-invalid");
+      element.classList.add("is-valid");
+      editor.classList.remove("is-invalid");
+      editor.classList.add("is-valid");
+    }
   }
 
-  form.classList.add("was-validated");
-
-  return form.checkValidity();
+  return isValid;
 }
 
 function handleFormSubmission(callback) {
   return function (e) {
     e.preventDefault();
-    if (!validateForm()) return;
-    
-    renderLoading();    
+
+    if (!validateForm()) {
+      return;
+    }
+
+    renderLoading();
     setTimeout(() => {
-      callback();    
-      removeLoading(); 
+      callback();
+      removeLoading();
     }, 1000);
   };
 }
 
 function collectFormData() {
-  const titulo = document.getElementById("newsTitle").value;
-  const imagem = document.getElementById("imageURL").value;
-  const autor = document.getElementById("newsAuthor").value;
-  const conteudo =  tinymce.activeEditor.getContent();
+  const titulo = formElements.title.value;
+  const imagem = formElements.image.value;
+  const autor = formElements.author.value;
+  const conteudo = tinymce.activeEditor.getContent();
 
-  return { titulo, conteudo, imagem, autor};
+  return { titulo, conteudo, imagem, autor };
 }
 
 async function createNews() {
   const data = collectFormData();
- try {
+
+  try {
     const response = await fetch(`${apiUrl}/index.php?action=add`, {
       method: "POST",
       headers: {
@@ -60,12 +77,11 @@ async function createNews() {
     });
 
     const news = await response.json();
-    clearForm()
+    clearForm();
     handleAlert("Notícia criada com sucesso", "success");
-  } catch (error) {    
+  } catch (error) {
     handleAlert("Erro ao criar notícia", "danger");
-  } 
-  
+  }
 }
 
 async function updateNews() {
@@ -73,15 +89,18 @@ async function updateNews() {
   const newsId = getUrlParameter("newsId");
 
   try {
-    const response = await fetch(`${apiUrl}/index.php?action=update&id=${newsId}`, {
-      method: "PUT", 
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const response = await fetch(
+      `${apiUrl}/index.php?action=update&id=${newsId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
 
-    const result = await response.json(); 
+    const result = await response.json();
 
     if (response.ok) {
       handleAlert(result.message, "success");
@@ -89,17 +108,16 @@ async function updateNews() {
       handleAlert(result.message, "danger");
     }
   } catch (error) {
-    handleAlert("Erro ao atualizar notícia", "danger"); 
+    handleAlert("Erro ao atualizar notícia", "danger");
   }
 }
 
 function setFormData(news) {
-  document.getElementById("newsTitle").value = news.titulo;
+  formElements.title.value = news.titulo;
   tinymce.get("newsContent").setContent(news.conteudo);
 
-  document.getElementById("imageURL").value = news.imagem;
-  document.getElementById("newsAuthor").value = news.autor;
-
+  formElements.image.value = news.imagem;
+  formElements.author.value = news.autor;
 }
 
 async function initAdminPage() {
@@ -111,13 +129,15 @@ async function initAdminPage() {
     renderLoading();
     const news = await getOneData(newsId);
     setFormData(news);
-  }  removeLoading();
-
+  }
+  removeLoading();
 }
 
 async function getOneData(id) {
-  const data = await fetch(`${apiUrl}/index.php?action=getOne&id=${id}`).then((response) => response.json());
-  return data
+  const data = await fetch(`${apiUrl}/index.php?action=getOne&id=${id}`).then(
+    (response) => response.json()
+  );
+  return data;
 }
 
 function handleButton(isEditing) {
@@ -126,10 +146,11 @@ function handleButton(isEditing) {
   const callback = isEditing ? updateNews : createNews;
   elements.send_form_btn.removeEventListener("click", createNews);
   elements.send_form_btn.removeEventListener("click", updateNews);
-  elements.send_form_btn.addEventListener("click", handleFormSubmission(callback));
+  elements.send_form_btn.addEventListener(
+    "click",
+    handleFormSubmission(callback)
+  );
 }
-
-
 
 function getUrlParameter(name) {
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -139,8 +160,5 @@ function getUrlParameter(name) {
     ? ""
     : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
-
-
-
 
 window.addEventListener("load", initAdminPage);

@@ -5,7 +5,7 @@ https://uniasselvinews.000webhostapp.com/index.php?action=list
 
 https://uniasselvinews.000webhostapp.com/index.php?action=search&titulo={titulo}
 */
-
+import {formElements} from "./elements.js";
 export const apiUrl = "https://uniasselvinews.000webhostapp.com";
 
 
@@ -49,10 +49,10 @@ export function renderLoading() {
   }
 
   export function clearForm() {
-    document.getElementById("newsTitle").value = "";
+    formElements.title.value = "";
     tinymce.activeEditor.setContent("");
-    document.getElementById("imageURL").value = "";
-    document.getElementById("newsAuthor").value = "";
+    formElements.image.value = "";
+    formElements.author.value = "";
     const form = document.getElementById("newsForm");
     form.classList.remove("was-validated");
   }

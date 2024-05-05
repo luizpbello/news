@@ -1,16 +1,13 @@
 import { elements } from "./elements.js";
 import { apiUrl, removeLoading, renderLoading, handleAlert } from "./utils.js";
 
-
-
 elements.create_btn.addEventListener("click", () => {
   window.location.href = "admin.html";
 });
 
-elements.redirec_home.addEventListener("click", () => {
+elements.redirect_home.addEventListener("click", () => {
   window.location.href = "../index.html";
-})
-
+});
 
 async function listNews() {
   renderLoading();
@@ -31,7 +28,9 @@ function buildTableBody(news) {
             <td>${news.data}</td>
             <td>${news.autor}</td>
             <td>
-                <button class="btn btn-primary" id="edit-news" onclick="editNews(${news.id})">
+                <button class="btn btn-primary" id="edit-news" onclick="editNews(${
+                  news.id
+                })">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                     </svg>
@@ -60,26 +59,22 @@ window.deleteNews = function (id) {
   deleteNewsById(id);
 };
 
-async function deleteNewsById(id) {    
-    renderLoading(); 
-  
+async function deleteNewsById(id) {
+  renderLoading();
+
   try {
-    const response = await fetch(`${apiUrl}/index.php?action=delete&id=${id}`, {
+    await fetch(`${apiUrl}/index.php?action=delete&id=${id}`, {
       method: "DELETE",
     });
-    const data = await response.json();
     handleAlert(`Notícia de ID ${id} exlcuida com sucesso`, "success");
     listNews();
   } catch (error) {
     handleAlert("Erro ao deletar notícia", "danger");
   } finally {
-    removeLoading(); 
+    removeLoading();
   }
 }
-
 
 window.onload = function () {
   listNews();
 };
-
-
