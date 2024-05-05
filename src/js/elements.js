@@ -8,6 +8,7 @@ export const elements = {
   search_button: document.getElementById("search-button"),
   search: document.getElementById("search-input"),
   redirect_home: document.getElementById("redirect-home"),
+  news_container: document.getElementById("news-container"),
 };
 
 export const formElements = {
@@ -15,3 +16,4 @@ export const formElements = {
   image: document.getElementById("imageURL"),
   author: document.getElementById("newsAuthor"),
 };
+
