@@ -1,5 +1,5 @@
 import { elements } from "./elements.js";
-import { apiUrl, removeLoading, renderLoading, handleAlert } from "./utils.js";
+import { apiUrl, removeLoading, renderLoading, handleAlert, redirectWithIdParam } from "./utils.js";
 
 elements.create_btn.addEventListener("click", () => {
   window.location.href = "admin.html";
@@ -48,12 +48,10 @@ function buildTableBody(news) {
 
 window.editNews = function (id) {
   console.log(`Para editar a notícia com id ${id}`);
-  redirectWithIdParam(id);
+  redirectWithIdParam(admin,id);
 };
 
-function redirectWithIdParam(id) {
-  window.location.href = `admin.html?newsId=${id}`;
-}
+
 
 window.deleteNews = function (id) {
   deleteNewsById(id);

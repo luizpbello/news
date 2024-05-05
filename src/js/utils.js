@@ -63,3 +63,16 @@ export function renderLoading() {
   export function trimNewContent(content) {
     return content.substring(0, 20) + "...";
   }
+
+  export function getUrlParameter(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+    const results = regex.exec(location.search);
+    return results === null
+      ? ""
+      : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+  
+  export function redirectWithIdParam(page, id) {
+    window.location.href = `${page}.html?newsId=${id}`;
+  }

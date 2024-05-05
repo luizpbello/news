@@ -1,5 +1,11 @@
 import { elements } from "./elements.js";
-import { apiUrl, renderLoading, removeLoading, formatDate } from "./utils.js";
+import {
+  apiUrl,
+  renderLoading,
+  removeLoading,
+  formatDate,
+  getUrlParameter,
+} from "./utils.js";
 
 elements.redirect_home.addEventListener("click", () => {
   window.location.href = "../index.html";
@@ -21,12 +27,18 @@ function buildView(oneNew) {
   div.innerHTML = `
   <div class="col-12">
   <div class="card mb-3">
-      <img src="${oneNew.imagem}" class="card-img-top" alt="..." style="max-width: 100%; height: 400px;">
+      <img src="${
+        oneNew.imagem
+      }" class="card-img-top" alt="..." style="max-width: 100%; height: 400px;">
       <div class="card-body">
           <h1 class="card-title">${oneNew.titulo}</h1>
           <p class="card-text">${oneNew.conteudo}</p>
-          <p class="card-text"><small class="text-muted"><b>Autor:</b> ${oneNew.autor}</small></p>
-          <p class="card-text"><small class="text-muted">${formatDate(oneNew.data)}</small></p>
+          <p class="card-text"><small class="text-muted"><b>Autor:</b> ${
+            oneNew.autor
+          }</small></p>
+          <p class="card-text"><small class="text-muted">${formatDate(
+            oneNew.data
+          )}</small></p>
       </div>
   </div>
 </div>

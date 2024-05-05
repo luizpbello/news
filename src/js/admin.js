@@ -5,6 +5,7 @@ import {
   renderLoading,
   clearForm,
   handleAlert,
+  getUrlParameter
 } from "./utils.js";
 
 tinymce.init({
@@ -152,13 +153,5 @@ function handleButton(isEditing) {
   );
 }
 
-function getUrlParameter(name) {
-  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-  const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-  const results = regex.exec(location.search);
-  return results === null
-    ? ""
-    : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
 
 window.addEventListener("load", initAdminPage);

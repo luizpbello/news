@@ -1,5 +1,12 @@
 import { elements } from "./elements.js";
-import { apiUrl, renderLoading, removeLoading, formatDate, trimNewContent } from "./utils.js";
+import {
+  apiUrl,
+  renderLoading,
+  removeLoading,
+  formatDate,
+  trimNewContent,
+  redirectWithIdParam,
+} from "./utils.js";
 
 function redirectToAdmin() {
   window.location.href = "./admin/list.html";
@@ -31,8 +38,6 @@ async function listNews() {
   removeLoading();
 }
 
-
-
 function renderNews(news) {
   const newsContainer = elements.news_container;
   newsContainer.innerHTML = "";
@@ -51,6 +56,7 @@ function renderNews(news) {
               <p class="card-text"><small class="text-muted">${formatDate(
                 news.data
               )}</small></p>
+              <button class="btn btn-dark" id="read-news-${index}">Ler notícia</button>
           </div>
       </div>
     `;
@@ -78,12 +84,11 @@ function renderEmptyNews() {
   });
 }
 
-
-
 elements.search_button.addEventListener("click", (e) => {
   e.preventDefault();
   handleSearch();
 });
+
 
 window.onload = () => {
   listNews();
