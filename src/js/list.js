@@ -23,7 +23,7 @@ function buildTableBody(news) {
   news.forEach((news, index) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-            <td>${index + 1}</td>
+            <td>${news.id}</td>
             <td>${news.titulo}</td>
             <td>${news.data}</td>
             <td>${news.autor}</td>
