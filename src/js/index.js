@@ -1,5 +1,5 @@
 import { elements } from "./elements.js";
-import { apiUrl, renderLoading, removeLoading, formatDate } from "./utils.js";
+import { apiUrl, renderLoading, removeLoading, formatDate, trimNewContent } from "./utils.js";
 
 function redirectToAdmin() {
   window.location.href = "./admin/list.html";
@@ -44,7 +44,7 @@ function renderNews(news) {
           <img src="${news.imagem}" class="card-img-top" alt="...">
           <div class="card-body">
               <h5 class="card-title">${news.titulo}</h5>
-              <p class="card-text">${news.conteudo}</p>
+              <p class="card-text">${trimNewContent(news.conteudo)}</p>
               <p class="card-text"><small class="text-muted"><b>Autor:</b> ${
                 news.autor
               }</small></p>

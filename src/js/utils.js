@@ -59,3 +59,7 @@ export function renderLoading() {
     form.classList.remove("was-validated");
   }
   
+
+  export function trimNewContent(content) {
+    return content.substring(0, 20) + "...";
+  }
