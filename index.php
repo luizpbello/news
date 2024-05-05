@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         echo json_encode($news);
         exit();
     } else {
-        echo "O parâmetro 'titulo' não foi fornecido.";
+        echo json_encode(array("message" => "O parâmetro 'titulo' é obrigatório."));
         exit();
     }
 }
@@ -163,11 +163,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
             $row = $result->fetch_assoc();
             echo json_encode($row);
         } else {
-            echo "Nenhuma notícia encontrada com o ID fornecido.";
+            echo json_encode(array("message" => "Notícia não encontrada."));
         }
         exit();
     } else {
-        echo "O parâmetro 'id' não foi fornecido.";
+        echo json_encode(array("message" => "O parâmetro 'id' é obrigatório."));
         exit();
     }
 }
