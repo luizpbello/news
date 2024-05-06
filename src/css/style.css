@@ -25,3 +25,6 @@ svg {
 }
 
 
+.dropdown-item{
+    cursor: pointer;
+}

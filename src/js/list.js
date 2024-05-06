@@ -6,8 +6,13 @@ elements.create_btn.addEventListener("click", () => {
 });
 
 elements.redirect_home.addEventListener("click", () => {
-  window.location.href = "/";
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    window.location.href = "/";
+  } else {
+    window.location.href = "https://luizpbello.github.io/news/";
+  }
 });
+
 
 async function listNews() {
   renderLoading();

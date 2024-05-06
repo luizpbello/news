@@ -11,7 +11,8 @@ export const elements = {
   news_container: document.getElementById("news-container"),
   view_container: document.getElementById("view-container"),
   read_news: document.getElementById("read-news"),
-  form_title: document.getElementById("form-title")
+  form_title: document.getElementById("form-title"),
+  home_link: document.getElementById("home-link"),
 };
 
 export const formElements = {

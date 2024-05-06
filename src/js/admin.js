@@ -164,4 +164,12 @@ function setFormTitle(isEditing) {
 }
 
 
+elements.home_link.addEventListener("click", () => {
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    window.location.href = "http://localhost:5500/";
+} else {
+    window.location.href = "https://news-portal-frontend.vercel.app/";
+}
+});
+
 window.addEventListener("load", initAdminPage);
