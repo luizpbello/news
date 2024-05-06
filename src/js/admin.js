@@ -151,10 +151,16 @@ function handleButton(isEditing) {
   const callback = isEditing ? updateNews : createNews;
   elements.send_form_btn.removeEventListener("click", createNews);
   elements.send_form_btn.removeEventListener("click", updateNews);
+  setFormTitle(isEditing);
   elements.send_form_btn.addEventListener(
     "click",
     handleFormSubmission(callback)
   );
+}
+
+function setFormTitle(isEditing) {
+  const formTitle = isEditing ? "Atualizar Notícia" : "Criar Notícia";
+  elements.form_title.textContent = formTitle;
 }
 
 

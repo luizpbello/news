@@ -8,7 +8,7 @@ import {
 } from "./utils.js";
 
 elements.redirect_home.addEventListener("click", () => {
-  window.location.href = "/index.html";
+  window.location.href = "/";
 });
 
 async function renderView() {

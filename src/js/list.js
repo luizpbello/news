@@ -6,7 +6,7 @@ elements.create_btn.addEventListener("click", () => {
 });
 
 elements.redirect_home.addEventListener("click", () => {
-  window.location.href = "/index.html";
+  window.location.href = "/";
 });
 
 async function listNews() {
@@ -47,11 +47,8 @@ function buildTableBody(news) {
 }
 
 window.editNews = function (id) {
-  console.log(`Para editar a notícia com id ${id}`);
   redirectWithIdParam("admin",id);
 };
-
-
 
 window.deleteNews = function (id) {
   deleteNewsById(id);
