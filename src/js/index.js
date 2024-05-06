@@ -61,7 +61,14 @@ function renderNews(news) {
       </div>
     `;
     newsContainer.appendChild(div);
+
   });
+  const readNews = document.querySelectorAll("[id^=read-news]");
+  readNews.forEach((news, index) => {
+    news.addEventListener("click", () => {
+      redirectWithIdParam("view/view", index);
+    });
+  })
 }
 
 function renderEmptyNews() {
@@ -88,6 +95,8 @@ elements.search_button.addEventListener("click", (e) => {
   e.preventDefault();
   handleSearch();
 });
+
+
 
 
 window.onload = () => {

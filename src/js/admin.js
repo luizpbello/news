@@ -135,10 +135,14 @@ async function initAdminPage() {
 }
 
 async function getOneData(id) {
-  const data = await fetch(`${apiUrl}/index.php?action=getOne&id=${id}`).then(
-    (response) => response.json()
-  );
-  return data;
+ try{
+    const response = await fetch(`${apiUrl}/index.php?action=show&id=${id}`);
+    const data = await response.json();
+    return data;
+ } catch (error) {
+   handleAlert("Erro ao buscar notícia", "danger");
+ }
+ removeLoading();
 }
 
 function handleButton(isEditing) {

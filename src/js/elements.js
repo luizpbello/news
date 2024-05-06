@@ -10,6 +10,7 @@ export const elements = {
   redirect_home: document.getElementById("redirect-home"),
   news_container: document.getElementById("news-container"),
   view_container: document.getElementById("view-container"),
+  read_news: document.getElementById("read-news"),
 };
 
 export const formElements = {

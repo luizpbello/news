@@ -48,7 +48,7 @@ function buildTableBody(news) {
 
 window.editNews = function (id) {
   console.log(`Para editar a notícia com id ${id}`);
-  redirectWithIdParam(admin,id);
+  redirectWithIdParam("admin",id);
 };
 
 
