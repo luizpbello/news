@@ -6,7 +6,7 @@ elements.create_btn.addEventListener("click", () => {
 });
 
 elements.redirect_home.addEventListener("click", () => {
-  window.location.href = "../index.html";
+  window.location.href = "/index.html";
 });
 
 async function listNews() {

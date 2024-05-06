@@ -9,7 +9,7 @@ import {
 } from "./utils.js";
 
 function redirectToAdmin() {
-  window.location.href = "./admin/list.html";
+  window.location.href = "src/admin/list.html";
 }
 
 elements.redirectAdmin.addEventListener("click", () => {
@@ -66,7 +66,7 @@ function renderNews(news) {
   const readNews = document.querySelectorAll("[id^=read-news]");
   readNews.forEach((news, index) => {
     news.addEventListener("click", () => {
-      redirectWithIdParam("view/view", index);
+      redirectWithIdParam("src/view/view", index);
     });
   })
 }
@@ -87,7 +87,7 @@ function renderEmptyNews() {
   `;
   const createNews = document.getElementById("create-news");
   createNews.addEventListener("click", () => {
-    window.location.href = "./admin/admin.html";
+    window.location.href = "src/admin/admin.html";
   });
 }
 
