@@ -1,5 +1,5 @@
 import { elements } from "./elements.js";
-import { apiUrl, removeLoading, renderLoading, handleAlert, redirectWithIdParam } from "./utils.js";
+import { apiUrl, removeLoading, renderLoading, handleAlert, redirectWithIdParam, formatDate } from "./utils.js";
 
 elements.create_btn.addEventListener("click", () => {
   window.location.href = "admin.html";
@@ -7,7 +7,7 @@ elements.create_btn.addEventListener("click", () => {
 
 elements.redirect_home.addEventListener("click", () => {
   if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-    window.location.href = "/";
+    window.location.href = "../../index.html";
   } else {
     window.location.href = "https://luizpbello.github.io/news/";
   }
@@ -30,7 +30,7 @@ function buildTableBody(news) {
     tr.innerHTML = `
             <td>${news.id}</td>
             <td>${news.titulo}</td>
-            <td>${news.data}</td>
+            <td>${formatDate(news.data)}</td>
             <td>${news.autor}</td>
             <td>
                 <button class="btn btn-primary" id="edit-news" onclick="editNews(${

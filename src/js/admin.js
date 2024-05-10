@@ -135,8 +135,9 @@ async function initAdminPage() {
 }
 
 async function getOneData(id) {
+  console.log(id)
  try{
-    const response = await fetch(`${apiUrl}/index.php?action=show&id=${id}`);
+    const response = await fetch(`${apiUrl}/index.php?action=getOne&id=${id}`);
     const data = await response.json();
     return data;
  } catch (error) {
@@ -163,13 +164,5 @@ function setFormTitle(isEditing) {
   elements.form_title.textContent = formTitle;
 }
 
-
-elements.home_link.addEventListener("click", () => {
-  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-    window.location.href = "http://localhost:5500/";
-} else {
-    window.location.href = "https://news-portal-frontend.vercel.app/";
-}
-});
 
 window.addEventListener("load", initAdminPage);

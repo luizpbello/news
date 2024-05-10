@@ -9,7 +9,7 @@ import {
 
 elements.redirect_home.addEventListener("click", () => {
   if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-    window.location.href = "/";
+    window.location.href = "../../index.html";
   } else {
     window.location.href = "https://luizpbello.github.io/news/";
   }
@@ -17,10 +17,13 @@ elements.redirect_home.addEventListener("click", () => {
 
 
 async function renderView() {
+  const id = getUrlParameter("newsId");
+  console.log(id);
   renderLoading();
-  const response = await fetch(`${apiUrl}/index.php?action=list`);
+  const response = await fetch(`${apiUrl}/index.php?action=getOne&id=${id}`);
   const data = await response.json();
-  buildView(data[1]);
+  console.log(data)
+  buildView(data);
   removeLoading();
 }
 

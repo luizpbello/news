@@ -6,7 +6,7 @@ https://uniasselvinews.000webhostapp.com/index.php?action=list
 https://uniasselvinews.000webhostapp.com/index.php?action=search&titulo={titulo}
 */
 import {formElements} from "./elements.js";
-export const apiUrl = "https://uniasselvinews.000webhostapp.com";
+export const apiUrl = "http://localhost:8080";
 
 export function formatDate(date) {
   return new Date(date).toLocaleDateString("pt-BR");
@@ -61,7 +61,10 @@ export function renderLoading() {
   
 
   export function trimNewContent(content) {
-    return content.substring(0, 20) + "...";
+    const sanitizedContent = content.replace(/<[^>]*>?/gm, "");
+    return sanitizedContent.length <= 150
+      ? sanitizedContent
+      : sanitizedContent.substring(0, 150) + "...";
   }
 
   export function getUrlParameter(name) {

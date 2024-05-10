@@ -1,16 +1,7 @@
-
-
-//define("DB_HOST", "localhost");
-//define("DB_USERNAME", "id22107572_uninews");
-//define("DB_PASSWORD", "h@j5~5xT7WN?");
-//define("DB_DATABASE_NAME", "id22107572_notice");
-
 <?php
-
-// Definindo as credenciais do banco de dados
 define("DB_HOST", "localhost");
-define("DB_USERNAME", "id22107572_uninews");
-define("DB_PASSWORD", "h@j5~5xT7WN?");
+define("DB_USERNAME", "root");
+define("DB_PASSWORD", "");
 define("DB_DATABASE_NAME", "id22107572_notice");
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -20,12 +11,12 @@ header("Access-Control-Allow-Methods: HEAD, GET, POST, PUT, PATCH, DELETE, OPTIO
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
 header('Content-Type: application/json');
 $method = $_SERVER['REQUEST_METHOD'];
-if ($method == "OPTIONS") {
-header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
-header("HTTP/1.1 200 OK");
-die();
-}
+// if ($method == "OPTIONS") {
+// header('Access-Control-Allow-Origin: *');
+// header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
+// header("HTTP/1.1 200 OK");
+// die();
+// }
 
 
 try {
@@ -39,7 +30,6 @@ try {
     exit();
 }
 
-// Rota para listar todas as notícias (GET)
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'list') {
     $sql = "SELECT * FROM noticia";
     $result = $conn->query($sql);
@@ -55,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     exit();
 }
 
-// Rota para pesquisar notícias por título (GET)
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'search') {
     if(isset($_GET['titulo'])) {
         $titulo = $_GET['titulo'];
@@ -86,7 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
     $conteudo = $data['conteudo'];
     $imagem = $data['imagem'];
     
-    // Inserir a notícia no banco de dados
     $sql = "INSERT INTO noticia (titulo, autor, conteudo, imagem) VALUES ('$titulo', '$autor', '$conteudo', '$imagem')";
     if ($conn->query($sql) === TRUE) {
         echo json_encode(array("message" => "Notícia adicionada com sucesso."));
@@ -97,28 +85,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
 }
 
 
-// Rota para atualizar uma notícia (PUT)
 if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_GET['action']) && $_GET['action'] === 'update') {
-    // Pega o ID diretamente de $_GET
     if(isset($_GET['id'])) {
         $id = $_GET['id'];
 
-        // Lê o conteúdo do corpo da solicitação e decodifica o JSON
         $data = json_decode(file_get_contents('php://input'), true);
         
-        // Verifica se todos os campos necessários foram fornecidos
         if(isset($data['titulo'], $data['autor'], $data['conteudo'], $data['imagem'])) {
             $titulo = $data['titulo'];
             $autor = $data['autor'];
             $conteudo = $data['conteudo'];
             $imagem = $data['imagem'];
 
-            // Atualizar a notícia no banco de dados
-            $sql = "UPDATE noticia SET titulo='$titulo', autor='$autor', conteudo='$conteudo', imagem='$imagem' WHERE id=$id";
-            if ($conn->query($sql) === TRUE) {
-               echo json_encode(array("message" => "Notícia atualizada com sucesso."));
+            $sql = "UPDATE noticia SET titulo=?, autor=?, conteudo=?, imagem=? WHERE id=?";
+            $stmt = $conn->prepare($sql);
+
+            if ($stmt) {
+                $stmt->bind_param("ssssi", $titulo, $autor, $conteudo, $imagem, $id);
+
+                if ($stmt->execute()) {
+                    echo json_encode(array("message" => "Notícia atualizada com sucesso."));
+                } else {
+                    echo json_encode(array("message" => "Erro ao atualizar notícia: " . $stmt->error));
+                }
+
+                $stmt->close();
             } else {
-                echo json_encode(array("message" => "Erro ao atualizar notícia: " . $conn->error));
+                echo json_encode(array("message" => "Erro ao preparar a declaração SQL: " . $conn->error));
             }
         } else {
             echo json_encode(array("message" => "Todos os campos são necessários."));
@@ -132,13 +125,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_GET['action']) && $_GET['act
 
 
 
-// Rota para deletar uma notícia (DELETE)
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['action']) && $_GET['action'] === 'delete') {
     // Pega o ID diretamente de $_GET
     if(isset($_GET['id'])) {
         $id = $_GET['id'];
 
-        // Deletar a notícia no banco de dados
         $sql = "DELETE FROM noticia WHERE id=$id";
         if ($conn->query($sql) === TRUE) {
             echo json_encode(array("message" => "Notícia deletada com sucesso."));
@@ -152,7 +143,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['action']) && $_GET['
 }
 
 
-// Rota para pegar uma notícia por ID (GET)
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getOne') {
     if(isset($_GET['id'])) {
         $id = $_GET['id'];
@@ -173,7 +163,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 }
 
 
-// Fechando a conexão
 $conn->close();
 
 ?>

@@ -6,6 +6,7 @@ import {
   formatDate,
   trimNewContent,
   redirectWithIdParam,
+  handleAlert,
 } from "./utils.js";
 
 function redirectToAdmin() {
@@ -16,13 +17,54 @@ elements.redirectAdmin.addEventListener("click", () => {
   redirectToAdmin();
 });
 
+function renderDropDownSearchOptions(options) {
+  const dropdownContainer = document.createElement('div');
+  dropdownContainer.classList.add('dropdown-menu', 'show');
+
+  if(options.length === 0) {
+    dropdownContainer.innerHTML = '<p class="dropdown-item">Nenhuma notícia encontrada</p>';
+  }
+
+  options.forEach(option => {
+    const dropdownItem = document.createElement('button');
+    dropdownItem.classList.add('dropdown-item');
+    dropdownItem.type = 'button';
+    dropdownItem.innerText = option.titulo;
+    dropdownItem.addEventListener('click', function() {
+      dropdownContainer.innerHTML = ''; 
+      redirectWithIdParam('src/view/view', option.id);
+    });
+    dropdownContainer.appendChild(dropdownItem);
+  });
+
+  const input = document.getElementById('search-input');
+  input.parentNode.appendChild(dropdownContainer);
+
+  const inputRect = input.getBoundingClientRect();
+  dropdownContainer.style.position = 'absolute';
+  dropdownContainer.style.top = inputRect.bottom + 'px';
+  dropdownContainer.style.left = inputRect.left + 'px';
+
+  document.addEventListener('click', function(event) {
+    if (!dropdownContainer.contains(event.target) && event.target !== input) {
+      dropdownContainer.innerHTML = '';
+      dropdownContainer.remove();
+    }
+  });
+}
+
 async function handleSearch() {
   const search = elements.search.value;
-  const response = await fetch(
-    `${apiUrl}/index.php?action=search&titulo=${search}`
-  );
-  const data = await response.json();
-  console.log(data);
+  try {
+    const response = await fetch(
+      `${apiUrl}/index.php?action=search&titulo=${search}`
+    );
+    const data = await response.json();
+    renderDropDownSearchOptions(data);
+    
+  } catch (error) {
+    handleAlert("Erro ao buscar notícias", "danger");    
+  }
 }
 
 async function listNews() {
@@ -45,31 +87,36 @@ function renderNews(news) {
     const div = document.createElement("div");
     div.classList.add("col-12", "col-md-4");
     div.innerHTML = `
-      <div class="card mb-3">
-          <img src="${news.imagem}" class="card-img-top" alt="...">
-          <div class="card-body">
-              <h5 class="card-title">${news.titulo}</h5>
-              <p class="card-text">${trimNewContent(news.conteudo)}</p>
-              <p class="card-text"><small class="text-muted"><b>Autor:</b> ${
-                news.autor
-              }</small></p>
-              <p class="card-text"><small class="text-muted">${formatDate(
-                news.data
-              )}</small></p>
-              <button class="btn btn-dark" id="read-news-${index}">Ler notícia</button>
-          </div>
-      </div>
-    `;
-    newsContainer.appendChild(div);
+    <div class="card mb-3 min-height-200">
+        <img src="${news.imagem}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">${news.titulo}</h5>
+            <p class="card-text">${trimNewContent(news.conteudo)}</p>
+            <p class="card-text"><small class="text-muted"><b>Autor:</b> ${
+              news.autor
+            }</small></p>
+            <p class="card-text"><small class="text-muted">${formatDate(
+              news.data
+            )}</small></p>
+            <button class="btn btn-dark read-news-btn" data-news-id="${
+              news.id
+            }">Ler notícia</button>
+        </div>
+    </div>
+  `;
 
+    newsContainer.appendChild(div);
   });
-  const readNews = document.querySelectorAll("[id^=read-news]");
-  readNews.forEach((news, index) => {
-    news.addEventListener("click", () => {
-      redirectWithIdParam("src/view/view", index);
+  const readNewsButtons = document.querySelectorAll(".read-news-btn");
+  readNewsButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const newsId = button.dataset.newsId;
+      redirectWithIdParam("src/view/view", newsId);
     });
-  })
+  });
 }
+
+
 
 function renderEmptyNews() {
   const newsContainer = elements.news_container;
@@ -95,9 +142,6 @@ elements.search_button.addEventListener("click", (e) => {
   e.preventDefault();
   handleSearch();
 });
-
-
-
 
 window.onload = () => {
   listNews();
