@@ -6,7 +6,13 @@ https://uniasselvinews.000webhostapp.com/index.php?action=list
 https://uniasselvinews.000webhostapp.com/index.php?action=search&titulo={titulo}
 */
 import {formElements} from "./elements.js";
-export const apiUrl = "http://localhost:8080";
+export const apiUrl = () => {
+  if(window.location.hostname === "localhost" || window.location.hostname === ""){
+    return "http://localhost:8080";    
+  }else {
+    return "https://uniasselvinews.000webhostapp.com";
+  }
+}
 
 export function formatDate(date) {
   return new Date(date).toLocaleDateString("pt-BR");
