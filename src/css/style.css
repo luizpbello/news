@@ -24,11 +24,19 @@ svg {
     align-items: center;
 }
 
+.dropdown-menu{
+    min-width: 0;
+    width: 211px;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    left: 0;
+
+}
 
 .dropdown-item{
     cursor: pointer;
 }
-
 .card {
     height: 100%;
     display: flex;
@@ -52,4 +60,6 @@ svg {
     font-size: 1.25rem;
     font-weight: bold;
   }
+
+
   
