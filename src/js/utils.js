@@ -6,7 +6,7 @@ https://uniasselvinews.000webhostapp.com/index.php?action=list
 https://uniasselvinews.000webhostapp.com/index.php?action=search&titulo={titulo}
 */
 import {formElements} from "./elements.js";
-export const apiUrl = "https://uniasselvinews.000webhostapp.com";
+export const apiUrl = "https://uniasselvinews.000webhostapp.com"
 
 export function formatDate(date) {
   return new Date(date).toLocaleDateString("pt-BR");

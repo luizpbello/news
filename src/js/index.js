@@ -18,36 +18,37 @@ elements.redirectAdmin.addEventListener("click", () => {
 });
 
 function renderDropDownSearchOptions(options) {
-  const dropdownContainer = document.createElement('div');
-  dropdownContainer.classList.add('dropdown-menu', 'show');
+  const dropdownContainer = document.createElement("div");
+  dropdownContainer.classList.add("dropdown-menu", "show");
 
-  if(options.length === 0) {
-    dropdownContainer.innerHTML = '<p class="dropdown-item">Nenhuma notícia encontrada</p>';
+  if (options.length === 0) {
+    dropdownContainer.innerHTML =
+      '<p class="dropdown-item">Nenhuma notícia encontrada</p>';
   }
 
-  options.forEach(option => {
-    const dropdownItem = document.createElement('button');
-    dropdownItem.classList.add('dropdown-item');
-    dropdownItem.type = 'button';
+  options.forEach((option) => {
+    const dropdownItem = document.createElement("button");
+    dropdownItem.classList.add("dropdown-item");
+    dropdownItem.type = "button";
     dropdownItem.innerText = option.titulo;
-    dropdownItem.addEventListener('click', function() {
-      dropdownContainer.innerHTML = ''; 
-      redirectWithIdParam('src/view/view', option.id);
+    dropdownItem.addEventListener("click", function () {
+      dropdownContainer.innerHTML = "";
+      redirectWithIdParam("src/view/view", option.id);
     });
     dropdownContainer.appendChild(dropdownItem);
   });
 
-  const input = document.getElementById('search-input');
+  const input = document.getElementById("search-input");
   input.parentNode.appendChild(dropdownContainer);
 
   const inputRect = input.getBoundingClientRect();
-  dropdownContainer.style.position = 'absolute';
-  dropdownContainer.style.top = inputRect.bottom + 'px';
-  dropdownContainer.style.left = inputRect.left + 'px';
+  dropdownContainer.style.position = "absolute";
+  dropdownContainer.style.top = inputRect.bottom + "px";
+  dropdownContainer.style.left = inputRect.left + "px";
 
-  document.addEventListener('click', function(event) {
+  document.addEventListener("click", function (event) {
     if (!dropdownContainer.contains(event.target) && event.target !== input) {
-      dropdownContainer.innerHTML = '';
+      dropdownContainer.innerHTML = "";
       dropdownContainer.remove();
     }
   });
@@ -61,9 +62,8 @@ async function handleSearch() {
     );
     const data = await response.json();
     renderDropDownSearchOptions(data);
-    
   } catch (error) {
-    handleAlert("Erro ao buscar notícias", "danger");    
+    handleAlert("Erro ao buscar notícias", "danger");
   }
 }
 
@@ -95,7 +95,7 @@ function renderNews(news) {
             <p class="card-text"><small class="text-muted"><b>Autor:</b> ${
               news.autor
             }</small></p>
-            <p class="card-text"><small class="text-muted">${formatDate(
+            <p class="card-text"><small class="text-muted"><b>Publicado em: </b>${formatDate(
               news.data
             )}</small></p>
             <button class="btn btn-dark read-news-btn" data-news-id="${
@@ -115,8 +115,6 @@ function renderNews(news) {
     });
   });
 }
-
-
 
 function renderEmptyNews() {
   const newsContainer = elements.news_container;
