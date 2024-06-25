@@ -90,6 +90,7 @@ async function updateNews() {
   const newsId = getUrlParameter("newsId");
 
   try {
+    renderLoading();
     const response = await fetch(
       `${apiUrl}/index.php?action=update&id=${newsId}`,
       {
@@ -102,6 +103,8 @@ async function updateNews() {
     );
 
     const result = await response.json();
+
+    removeLoading();
 
     if (response.ok) {
       handleAlert(result.message, "success");

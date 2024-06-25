@@ -1,18 +1,27 @@
 import { elements } from "./elements.js";
-import { apiUrl, removeLoading, renderLoading, handleAlert, redirectWithIdParam, formatDate } from "./utils.js";
+import {
+  apiUrl,
+  removeLoading,
+  renderLoading,
+  handleAlert,
+  redirectWithIdParam,
+  formatDate,
+} from "./utils.js";
 
 elements.create_btn.addEventListener("click", () => {
   window.location.href = "admin.html";
 });
 
 elements.redirect_home.addEventListener("click", () => {
-  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+  if (
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+  ) {
     window.location.href = "../../index.html";
   } else {
     window.location.href = "https://luizpbello.github.io/news/";
   }
 });
-
 
 async function listNews() {
   renderLoading();
@@ -52,7 +61,7 @@ function buildTableBody(news) {
 }
 
 window.editNews = function (id) {
-  redirectWithIdParam("admin",id);
+  redirectWithIdParam("admin", id);
 };
 
 window.deleteNews = function (id) {

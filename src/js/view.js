@@ -33,7 +33,7 @@ function buildView(oneNew) {
   div.innerHTML = `
     <div class="col-12">
       <div class="card mb-3">
-        <img src="${oneNew.imagem}" class="card-img-top" alt="..." style="max-width: 100%; object-fit: fill;">
+        <img src="${oneNew.imagem}" class="card-img-top" alt="..." style="width: 30%; height: 300px; object-fit: fill;">
         <div class="card-body d-flex flex-column">
           <h1 class="card-title">${oneNew.titulo}</h1>
           <p class="card-text flex-grow-1">${oneNew.conteudo}</p>

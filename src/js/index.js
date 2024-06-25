@@ -83,9 +83,10 @@ async function listNews() {
 function renderNews(news) {
   const newsContainer = elements.news_container;
   newsContainer.innerHTML = "";
+  news.sort((a, b) => new Date(b.data) - new Date(a.data));
   news.forEach((news, index) => {
     const div = document.createElement("div");
-    div.classList.add("col-12", "col-md-4");
+    div.classList.add("col-12", "col-md-4", "mt-5");
     div.innerHTML = `
     <div class="card mb-3 min-height-200">
         <img src="${news.imagem}" class="card-img-top" alt="...">

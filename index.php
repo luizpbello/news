@@ -11,13 +11,6 @@ header("Access-Control-Allow-Methods: HEAD, GET, POST, PUT, PATCH, DELETE, OPTIO
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
 header('Content-Type: application/json');
 $method = $_SERVER['REQUEST_METHOD'];
-// if ($method == "OPTIONS") {
-// header('Access-Control-Allow-Origin: *');
-// header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
-// header("HTTP/1.1 200 OK");
-// die();
-// }
-
 
 try {
     $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE_NAME);
@@ -40,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
             $news[] = $row;
         }
     }
-    
+
     echo json_encode($news);
     exit();
 }
@@ -50,14 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         $titulo = $_GET['titulo'];
         $sql = "SELECT * FROM noticia WHERE titulo LIKE '%$titulo%'";
         $result = $conn->query($sql);
-        
+
         $news = array();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $news[] = $row;
             }
         }
-        
+
         echo json_encode($news);
         exit();
     } else {
@@ -68,13 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'add') {
     $data = json_decode(file_get_contents('php://input'), true);
-    
 
     $titulo = $data['titulo'];
     $autor = $data['autor'];
     $conteudo = $data['conteudo'];
     $imagem = $data['imagem'];
-    
+
     $sql = "INSERT INTO noticia (titulo, autor, conteudo, imagem) VALUES ('$titulo', '$autor', '$conteudo', '$imagem')";
     if ($conn->query($sql) === TRUE) {
         echo json_encode(array("message" => "Notícia adicionada com sucesso."));
@@ -90,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_GET['action']) && $_GET['act
         $id = $_GET['id'];
 
         $data = json_decode(file_get_contents('php://input'), true);
-        
+
         if(isset($data['titulo'], $data['autor'], $data['conteudo'], $data['imagem'])) {
             $titulo = $data['titulo'];
             $autor = $data['autor'];
@@ -126,7 +118,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_GET['action']) && $_GET['act
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['action']) && $_GET['action'] === 'delete') {
-    // Pega o ID diretamente de $_GET
     if(isset($_GET['id'])) {
         $id = $_GET['id'];
 
@@ -148,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         $id = $_GET['id'];
         $sql = "SELECT * FROM noticia WHERE id=$id";
         $result = $conn->query($sql);
-        
+
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             echo json_encode($row);
