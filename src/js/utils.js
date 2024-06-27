@@ -78,3 +78,7 @@ export function getUrlParameter(name) {
 export function redirectWithIdParam(page, id) {
   window.location.href = `${page}.html?newsId=${id}`;
 }
+
+export function redirectToAdminList(){
+  window.location.href = "admin.html";
+}

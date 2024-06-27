@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
             $row = $result->fetch_assoc();
             echo json_encode($row);
         } else {
-            echo json_encode(array("message" => "Notícia não encontrada."));
+            echo json_encode(array("message" => "Notícia não encontrada.", "error" => true));
         }
         exit();
     } else {
